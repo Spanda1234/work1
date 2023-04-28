@@ -1,8 +1,16 @@
-import {createStore} from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 
-const dummyReducer =()=>{
-    return 100;
-}
-const store = createStore(dummyReducer);
+// get the slice for auth
+import authSlice from './authSlice'
+import{ applyMiddleware} from 'redux'
+import thunk from 'redux-thunk'
+import {combineReducers} from 'redux'
 
-export default store;
+// create a store with required reducers
+const store = configureStore({
+  reducer: {
+    authSlice,
+  },
+})
+
+export default store

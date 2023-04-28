@@ -1,7 +1,7 @@
-export const logIn = (data) => {
+export const signUp = (data) => {
     console.log("action is called", data)
     return {
-        type: 'login',
+        type: 'signup',
         data: data
     }
 }

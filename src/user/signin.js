@@ -7,6 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { logIn } from '../redux/action'
 import user from '../db/db.json' 
 
+
 const Signin = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -31,8 +32,9 @@ const Signin = () => {
         } else if (password.length === 0) {
           toast.error('please enter password')
         } else {
-          for (let i =0; i<users.length;i++){
+          for (let i =0; i<users.length; i++){
             if(users[i].email===email && users[i].password===password){
+              console.warn(email,password)
               toast.success('welcome to wulife')
               navigate('/userDetails')
               break
@@ -41,8 +43,11 @@ const Signin = () => {
               sethandleerror(pre=> pre+1)
               break
             }
+            
           }
           console.log (handleerror)
+          console.warn(email,password)
+          
           // dispatch(signin({
           //   email, 
           //   password}))
@@ -56,15 +61,13 @@ function onChange(value) {
    
   return (
     <div> <h1 style = {{textAlign: 'center', marginTop: 30}}> Login </h1>
-    
     <div style={{ marginTop: 10 }}>
       
         <div style={styles.container}>
 
         <div className='mb-3'>
           <label> Username : </label>
-          <input
-          onChange={(event) => {
+          <input onChange={(event) => {
               setEmail(event.target.value)}}
               className='form-control'
               type='text'

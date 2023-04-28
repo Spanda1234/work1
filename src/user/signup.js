@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { signup } from '../redux/authSlice'
+import { signUp } from '../redux/action'
 import user from '../db/db.json' 
 import * as fs from 'fs';
 import { saveAs } from 'file-saver';
@@ -15,18 +15,29 @@ import axios from 'axios'
 
 const Signup = () => {
   // get user inputs
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
   const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [handle, sethandle] = useState(false)
+  const [dob, setDob] = useState('')
+  const [phone, setPhone] = useState('')
+  const [gender, setGender] = useState('')
+  const [id, setId] = useState('')
+  const [issuedate, setIssuedate] = useState('')
+  const [expdate, setExpdate] = useState('')
 
   // this function is used to navigate from one component to another programmatically
   // userNavigate() returns a function reference
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const user1 = {
+    name: 'test',
+    email: 'test@wu.com',
+    address: 'pune',
+   phone: 1234
+  }
  
 
   const signuphsndle =async () =>  {
@@ -36,42 +47,61 @@ const Signup = () => {
     console.log(user.user)
       
     // check if user has really entered any value
-    if (firstName.length === 0) {
-      toast.error('please enter first name')
-    } else if (lastName.length === 0) {
-      toast.error('please enter last name')
+    if (name.length === 0) {
+      toast.error('please enter name')
+    } else if (address.length === 0) {
+      toast.error('please enter address')
     } else if (email.length === 0) {
       toast.error('please enter email')
-    } else if (phone.length === 0) {
-      toast.error('please enter phone number')
     } else if (password.length === 0) {
       toast.error('please enter password')
+    } else if (confirmPassword.length === 0) {
+      toast.error('please confirm password')
+    } else if (dob.length==0){
+      toast.error('please enter date of birth')
+    } else if (phone.length === 0) {
+      toast.error('please enter phone number')
+    } else if (id.length === 0) {
+      toast.error('please enter ID number')
+    } else if (issuedate.length === 0) {
+      toast.error('please enter issue date')
+    } else if (expdate.length === 0) {
+      toast.error('please enter expiry date')
+    } else if (password !== confirmPassword) {
+      toast.error('password does not match')
     }  else {
-      axios.post('http://localhost:3500/user',{
-                  id:Date.now(),
-                  name:firstName,
+      const user = {
+        id:Date.now(),
+        name:name,
         email:email,
         password: password,
-        address: lastName,
-        dob: "19/01/96",
+        address: address,
+        dob: dob,
         phone: phone,
-        id_no: "2345",
-        issue_date: "01/18",
-        exp_date: "01/28",
-          image: "img/id_img1.jpg"
-            }).then((response)=>{
-              users = response.data
-            })
+        id_no: id,
+        issue_date: issuedate,
+        exp_date: expdate,
+        //image: "img/id_img1.jpg"
+        
     }
-    //  users.push(user)
-    //  console.log(users)
-    //  //writeJsonFile('../db/db.json', users);
-
-    //  var file = new File([users], "../db/db.json");
-    // saveAs("../db/db.json");
-
-    // await fs.writeFileSync('../db/db.json', JSON.stringify(users), (err) => {
-    //   if (err) console.log('Error writing file:', err);})
+    toast.success('successfully registered new user')
+      // navigate to the singin page
+      navigate('/')
+      // axios.post('http://localhost:3500/user',{
+      //             id:Date.now(),
+      //             name:name,
+      //   email:email,
+      //   password: password,
+      //   address: address,
+      //   dob: dob,
+      //   phone: phone,
+      //   id_no: id,
+      //   issue_date: issuedate,
+      //   exp_date: expdate,
+      //     image: "img/id_img1.jpg"
+      //       }).then((response)=>{
+      //         users = response.data
+      //       })
 
       // dispatch(signup({
       //   firstName,
@@ -79,63 +109,59 @@ const Signup = () => {
       //   email, 
       //   phone,
       //   password}))
-     
-        toast.success('successfully registered a new user')
+    }
+      users.push(user.user)
+      console.log(users)
+    //  //writeJsonFile('../db/db.json', users);
 
-        // navigate to the singin page
-        navigate('/signin')
+     var file = new File([users], "../db/db.json");
+     //saveAs("../db/db.json");
+
+    // await fs.writeFileSync('../db/db.json', JSON.stringify(users), (err) => {
+    //   if (err) console.log('Error writing file:', err);})
+
+      
+     
     }
     
   
 
   return (
-    
-
-    <div>
-      
+    <div> 
        <h1 style = {{textAlign: 'center', marginTop: 10}}> Signup</h1>
-    
-    <div style={{ marginTop: 10 }}>
-    
-      <div style={styles.container}>
+        <div style={{ marginTop: 10 }}>
+        <div style={styles.container}>
         <div className='mb-3' style={{ marginTop: 5 }}>
           <label>Name : </label>
-          <input
-            onChange={(event) => {
-              setFirstName(event.target.value)
+          <input onChange={(event) => {
+              setName(event.target.value)
             }}
             className='form-control'
             type='text'
             placeholder='Enter Your Name'
-            required 
-          />
+            required />
         </div>
 
         <div className='mb-3'>
           <label>Address : </label>
-          <input
-            onChange={(event) => {
-              setLastName(event.target.value)
+          <input onChange={(event) => {
+              setAddress(event.target.value)
             }}
             className='form-control'
             type='text'
             placeholder='Enter Full Address'
-            required 
-          />
+            required/>
           </div>
 
-<div className='mb-3'>
-       
+        <div className='mb-3'>
           <label>Email: </label>
-          <input
-            onChange={(event) => {
+          <input onChange={(event) => {
               setEmail(event.target.value)
             }}
             className='form-control'
             type='email'
             placeholder='Enter Email'
-            required 
-          />
+            required />
         </div>
 
         <div className='mb-3'>
@@ -150,9 +176,20 @@ const Signup = () => {
           />
           </div>
 
+          <div className='mb-3'>
+          <label>Confirm Password : </label>
+          <input onChange={(event) => {
+            setConfirmPassword(event.target.value)}}
+          className='form-control' 
+          type='password'
+          placeholder='Enter Password'
+          required />
+          </div>
+
         <div className='mb-3'>
           <label>Date of Birth : </label>
-          <input
+          <input onChange={(event) => {
+            setDob(event.target.value)}}
             className='form-control'
             type='date'
           />
@@ -160,8 +197,7 @@ const Signup = () => {
 
         <div className='mb-3'>
           <label>Phone Number : </label>
-          <input
-            onChange={(event) => {
+          <input onChange={(event) => {
               setPhone(event.target.value)
             }}
             className='form-control'
@@ -183,17 +219,29 @@ const Signup = () => {
 
 <div className='mb-3'>
           <label>ID details : </label>
+
   <div class="input-group mb-3">
   <span class="input-group-text" id="basic-addon1">ID No.</span>
-  <input type="text" class="form-control" placeholder="Your vaild ID Number" 
+  <input onChange={(event) => {
+              setId(event.target.value)
+            }}
+  type="text" class="form-control" placeholder="Your vaild ID Number" 
   aria-label="Your vaild ID Number" aria-describedby="basic-addon1"/></div>
+
  <div class="input-group mb-3">
   <span class="input-group-text" id="basic-addon1">Issue Date</span>
-  <input type="text" class="form-control" placeholder="Your vaild ID Issue Date" 
+  <input onChange={(event) => {
+              setIssuedate(event.target.value)
+            }}
+  type="text" class="form-control" placeholder="Your vaild ID Issue Date" 
   aria-label="Your vaild ID Issue Date" aria-describedby="basic-addon1"/></div>
+
   <div class="input-group mb-3">
   <span class="input-group-text" id="basic-addon1">Expiry Date</span>
-  <input type="text" class="form-control" placeholder="Your vaild ID Expiry Date" 
+  <input onChange={(event) => {
+              setExpdate(event.target.value)
+            }}
+  type="text" class="form-control" placeholder="Your vaild ID Expiry Date" 
   aria-label="Your vaild ID Expiry Date" aria-describedby="basic-addon1"/>
 </div>
         </div>
@@ -212,13 +260,16 @@ const Signup = () => {
 
         <button  style={styles.submitButton}
         className ='btn btn'
-          onClick={signuphsndle} >
+          onClick={() => dispatch(signUp(user1))}
+          >
+          {/* {signuphsndle} */}
+           
             Submit
           </button>
 
         <div className='mb-3' style={{ marginTop: 5 }}>
           <div>
-            Already have an account? <Link to='/signin'>Login here</Link>
+            Already have an account? <Link to='/'>Login here</Link>
           </div>
        
         </div>
@@ -234,7 +285,7 @@ const Signup = () => {
 const styles = {
     container: {
       width: 400,
-      height: 800,
+      height: 1000,
       padding: 10,
       position: 'relative',
       top: 0,
@@ -255,7 +306,7 @@ const styles = {
       color: 'yellow',
       borderRadius: 5,
       border: 'none',
-      marginTop: 5, 
+      marginTop: 50, 
     },
 }
 

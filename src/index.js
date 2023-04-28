@@ -6,17 +6,19 @@ import reportWebVitals from './reportWebVitals'
 
 // get the store and provider
 import { Provider } from 'react-redux'
-import store from './store'
+//import store from './store'
 import{ applyMiddleware} from 'redux'
-import { configureStore } from '@reduxjs/toolkit';
-//import store from './redux/store'
 
+import store from './redux/store'
+
+console.warn(store)
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   
     <Provider store={store}>
       <App />
     </Provider>
+  
  
 )
 

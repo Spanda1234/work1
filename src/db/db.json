@@ -1,6 +1,6 @@
-{
-    "user":[
-        {
+[
+       
+    {
             "id":1,
             "name":"vidya sarkar",
             "email":"vidya.sarkar@wu.com",
@@ -17,8 +17,21 @@
         {
             "id":2,
             "name":" test",
-            "email":"vidya.testsarkar@wu.com",
+            "email":"test@wu.com",
             "password": "12343",
+            "address": "pune",
+            "dob": "19/01/95",
+            "phone": "1234567800",
+            "id no": "23452",
+            "issue date": "01/18",
+            "exp date": "01/28",
+            "image": "https://www.shutterstock.com/image-photo/us-driver-license-isolated-on-white-213777280"
+        },
+        {
+            "id":3,
+            "name":" test",
+            "email":"abc@wu.com",
+            "password": "123432",
             "address": "pune",
             "dob": "19/01/95",
             "phone": "1234567800",
@@ -28,6 +41,6 @@
             "image": "https://www.shutterstock.com/image-photo/us-driver-license-isolated-on-white-213777280"
         }
 
-    ]
+       
 
-}
+    ]

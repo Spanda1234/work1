@@ -4,59 +4,17 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { signup } from '../redux/authSlice'
+import user from '../db/db.json'
+import Signin from './signin'
 
 
 const UserDetails = () => {
-  // get user inputs
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [handle, sethandle] = useState(false)
 
-  // this function is used to navigate from one component to another programmatically
-  // userNavigate() returns a function reference
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
- 
+    
+    console.log(user)
+    const users = user
 
-  const signuphsndle = (event) => {
-    console.log(firstName, lastName, email, phone, password)
-      
-    // check if user has really entered any value
-    if (firstName.length === 0) {
-      toast.error('please enter first name')
-    } else if (lastName.length === 0) {
-      toast.error('please enter last name')
-    } else if (email.length === 0) {
-      toast.error('please enter email')
-    } else if (phone.length === 0) {
-      toast.error('please enter phone number')
-    } else if (password.length === 0) {
-      toast.error('please enter password')
-    } else if (confirmPassword.length === 0) {
-      toast.error('please confirm password')
-    } else if (password !== confirmPassword) {
-      toast.error('password does not match')
-    } else 
-      toast.success('successfully registered a new user')
-        // navigate to the singin page
-      navigate('/signin')
-      event.preventDefault()
-      dispatch(signup({
-        firstName: firstName,
-        lastName: lastName,
-        email: email, 
-        phone: phone,
-        password: password,
-      }))
-     
-        
-    
-    
-  }
+
 
   return (
 
@@ -70,10 +28,13 @@ const UserDetails = () => {
         
         <div style={styles.content}>
             <div className='card col'>
-                <img style={{ height: '10vw', display: 'block',objectFit:'cover',width:'100%' }} src={'Gymimage/profileImage.jpeg'}  />
+                <img style={{ height: '20vw', display: 'block',objectFit:'cover',width:'100%' }} 
+                src={'profileImage.jpeg'}  />
                 </div>
             </div>
+            
             <div style={styles.details}>
+            <div style={{ marginTop: 5 }}>
         
         <div>
 
@@ -122,6 +83,7 @@ const UserDetails = () => {
 
 
         
+    </div>
     </div>
     </div>
 
