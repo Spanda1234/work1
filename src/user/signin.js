@@ -4,28 +4,49 @@ import { toast } from 'react-toastify'
 import {signin, signout} from '../redux/authSlice'
 import { useDispatch } from 'react-redux'
 import ReCAPTCHA from "react-google-recaptcha";
+import { logIn } from '../redux/action'
+import user from '../db/db.json' 
 
 const Signin = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [handleerror, sethandleerror] = useState(0)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    // const user ={
+    //   name:'abc',
+    //   psw: 'abc',
+    //   id: 2
+    // }
     
     const signinhandle = () =>{
-        console.log(email, password)
+        console.log(user)
+        const users = user
+        
 
         if (email.length === 0) {
           toast.error('please enter email')
         } else if (password.length === 0) {
           toast.error('please enter password')
         } else {
-          dispatch(signin({
-            email, 
-            password}))
+          for (let i =0; i<users.length;i++){
+            if(users[i].email===email && users[i].password===password){
+              toast.success('welcome to wulife')
+              navigate('/userDetails')
+              break
+            } else {
+              toast.error('invalid email id or password')
+              sethandleerror(pre=> pre+1)
+              break
+            }
+          }
+          console.log (handleerror)
+          // dispatch(signin({
+          //   email, 
+          //   password}))
 
-            toast.success('welcome to wulife')
-            navigate('/home')
         }   
     }
 
@@ -64,10 +85,9 @@ function onChange(value) {
         </div>
         
 
-        <ReCAPTCHA
+     {handleerror>2? ( <ReCAPTCHA
     sitekey="6LcDYb4lAAAAABHaIbKU0T4LWT9--SSPSfHTsqwZ"
-    onChange={onChange}
-  />
+    onChange={onChange}/>) : null}
 
 <div style={{ marginTop:20 }}>
     <label>

@@ -4,6 +4,13 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { signup } from '../redux/authSlice'
+import user from '../db/db.json' 
+import * as fs from 'fs';
+import { saveAs } from 'file-saver';
+import axios from 'axios'
+// import {writeJsonFile} from 'write-json-file';
+
+// const fs = require('fs')
 
 
 const Signup = () => {
@@ -22,8 +29,11 @@ const Signup = () => {
   const dispatch = useDispatch()
  
 
-  const signuphsndle = () => {
+  const signuphsndle =async () =>  {
+    
     console.log(email, password)
+    const users = user.user
+    console.log(user.user)
       
     // check if user has really entered any value
     if (firstName.length === 0) {
@@ -36,17 +46,39 @@ const Signup = () => {
       toast.error('please enter phone number')
     } else if (password.length === 0) {
       toast.error('please enter password')
-    } else if (confirmPassword.length === 0) {
-      toast.error('please confirm password')
-    } else if (password !== confirmPassword) {
-      toast.error('password does not match')
-    } else {
-      dispatch(signup({
-        firstName,
-        lastName,
-        email, 
-        phone,
-        password}))
+    }  else {
+      axios.post('http://localhost:3500/user',{
+                  id:Date.now(),
+                  name:firstName,
+        email:email,
+        password: password,
+        address: lastName,
+        dob: "19/01/96",
+        phone: phone,
+        id_no: "2345",
+        issue_date: "01/18",
+        exp_date: "01/28",
+          image: "img/id_img1.jpg"
+            }).then((response)=>{
+              users = response.data
+            })
+    }
+    //  users.push(user)
+    //  console.log(users)
+    //  //writeJsonFile('../db/db.json', users);
+
+    //  var file = new File([users], "../db/db.json");
+    // saveAs("../db/db.json");
+
+    // await fs.writeFileSync('../db/db.json', JSON.stringify(users), (err) => {
+    //   if (err) console.log('Error writing file:', err);})
+
+      // dispatch(signup({
+      //   firstName,
+      //   lastName,
+      //   email, 
+      //   phone,
+      //   password}))
      
         toast.success('successfully registered a new user')
 
@@ -54,7 +86,7 @@ const Signup = () => {
         navigate('/signin')
     }
     
-  }
+  
 
   return (
     
@@ -105,6 +137,18 @@ const Signup = () => {
             required 
           />
         </div>
+
+        <div className='mb-3'>
+          <label>Password : </label>
+          <input
+          onChange={(event) => {
+            setPassword(event.target.value)}}
+          className='form-control' 
+          type='password'
+          placeholder='Enter Password'
+          required 
+          />
+          </div>
 
         <div className='mb-3'>
           <label>Date of Birth : </label>
@@ -183,6 +227,7 @@ const Signup = () => {
     </div>
   )
 }
+
 
 
 
