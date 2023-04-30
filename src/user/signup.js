@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp, upload_Image } from "../redux/imageAction";
 import user from "../db/db.json";
-// import * as fs from 'fs';
+import * as fs from 'fs';
 // import { saveAs } from 'file-saver';
 import axios from "axios";
 import { User_List } from "../redux/constant";
@@ -47,25 +47,31 @@ const Signup = () => {
     setGenderData({ ...genderData, [target.name]: target.value });
   };
 
-  const handleChange = (event) => {};
+  //const handleChange = (event) => {};
 
   function handleUpload() {
+    console.log("start")
+    console.log(files)
+
+    //fs.writeFileSync('../db/img',files,(err)=>{console.log(err)})
     const ImageData = new FormData();
-    
     if (files.length <= 5) {
       for (let i = 0; i < files.length; i++) {
-        ImageData.set('images', files);
+        ImageData.set("images", files);
       }
-    } else if(files.length>5) {
+    } else if (files.length > 5) {
       console.log("only 5 image will be upload");
     } else {
-      axios.post(`http://localhost:3500/user/${id}`,{
-        files,
-      }).then((Response)=>{
-        const result = Response.data
-      }).catch((error)=>{
-        console.log('error')
-      })
+      axios
+        .post(`http://localhost:3500/user/${id}`, {
+          files,
+        })
+        .then((Response) => {
+          const result = Response.data;
+        })
+        .catch((error) => {
+          console.log("error");
+        });
     }
     console.log(files);
   }
@@ -91,8 +97,8 @@ const Signup = () => {
       toast.error("password does not match");
     } else if (dob.length == 0) {
       toast.error("please enter date of birth");
-    } else if (phone.length === 0) {
-      toast.error("please enter phone number");
+    } else if (phone.length >= 10) {
+      toast.error("phone number should be 10 digit");
     } else if (id.length === 0) {
       toast.error("please enter ID number");
     } else if (issuedate.length === 0) {
@@ -376,11 +382,12 @@ const Signup = () => {
                 type="file"
                 multiple
                 onChange={(event) => {
-                  setFiles(event.target.files[0])
+                  setFiles(event.target.files[0]);
                 }}
               />
               <button
-                onClick={() => dispatch(upload_Image(handleUpload))}
+                onClick={handleUpload}
+                // () => dispatch(upload_Image(handleUpload))
                 className="btn btn-primary"
                 title="Upload_image"
                 style={{

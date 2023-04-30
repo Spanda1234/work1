@@ -39,6 +39,7 @@ const Login = () => {
         if (users[i].email === email && users[i].password === password) {
           console.warn(email, password);
           //setSuccess(true);
+          localStorage.setItem("userId",users[i].id)
           isValid = true;
         //   toast.success("welcome to wulife");
         // navigate("/userDetails");
@@ -52,6 +53,7 @@ const Login = () => {
       }
 
       if (isValid) {
+       
         toast.success("welcome to wulife");
         navigate("/userDetails");
       } else {

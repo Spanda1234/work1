@@ -7,8 +7,47 @@ import user from "../db/db.json";
 import login from "./login";
 
 const UserDetails = () => {
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [dob, setDob] = useState("");
+  const [phone, setPhone] = useState("");
+  const [genderData, setGenderData] = useState("");
+  const [id, setId] = useState("");
+  const [issuedate, setIssuedate] = useState("");
+  const [expdate, setExpdate] = useState("");
+  const [files, setFiles] = useState("");
+
+  
+  
   console.log(user);
-  const users = user;
+  useEffect(() => {
+    userDetail()
+  }, []);
+
+  const userDetail= ()=>{
+    const users = user.user;
+    const userid =parseInt(localStorage.getItem("userId"))
+
+    for(let i =0; i<users.length; i++){
+     // console.log(users[i].name)
+      if(users[i].id===userid){
+        //console.log(users[i].name)
+        setName(users[i].name)
+        setAddress(users[i].address)
+        setEmail(users[i].email)
+        setGenderData(users[i].gender.gender)
+        setDob(users[i].dob)
+        setPhone(users[i].phone)
+        setId(users[i].id_no)
+        setIssuedate(users[i].issue_date)
+        setExpdate(users[i].exp_date)
+      }
+    }
+
+  }
 
   return (
     <div>
@@ -41,7 +80,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}> Name : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"Vidya Sarkar"}</span>
+                    <span>{name}</span>
                   </div>
                 </div>
 
@@ -51,7 +90,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}> Address : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"pune"}</span>
+                    <span>{address}</span>
                   </div>
                 </div>
 
@@ -61,7 +100,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}> Email : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"Vidya.Sarkar@wu.com"}</span>
+                    <span>{email}</span>
                   </div>
                 </div>
 
@@ -71,7 +110,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}>Date of Birth : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"25"}</span>
+                    <span>{dob}</span>
                   </div>
                 </div>
 
@@ -81,7 +120,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}>Phone Number : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"1234567890"}</span>
+                    <span>{phone}</span>
                   </div>
                 </div>
 
@@ -91,7 +130,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}>Gender : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"Female"}</span>
+                    <span>{genderData}</span>
                   </div>
                 </div>
 
@@ -101,7 +140,7 @@ const UserDetails = () => {
                     <label style={{ fontSize: "20px" }}>ID details : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
-                    <span>{"Female"}</span>
+                    <span>{id}</span>
                   </div>
                 </div>
               </div>
