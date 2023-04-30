@@ -1,46 +1,149 @@
-[
-       
+{
+  "user": [
     {
-            "id":1,
-            "name":"vidya sarkar",
-            "email":"vidya.sarkar@wu.com",
-            "password": "1234",
-            "address": "pune",
-            "dob": "19/01/96",
-            "phone": "1234567809",
-            "id no": "2345",
-            "issue date": "01/18",
-            "exp date": "01/28",
-            "image": "img/id_img1.jpg"
-        },
-
-        {
-            "id":2,
-            "name":" test",
-            "email":"test@wu.com",
-            "password": "12343",
-            "address": "pune",
-            "dob": "19/01/95",
-            "phone": "1234567800",
-            "id no": "23452",
-            "issue date": "01/18",
-            "exp date": "01/28",
-            "image": "https://www.shutterstock.com/image-photo/us-driver-license-isolated-on-white-213777280"
-        },
-        {
-            "id":3,
-            "name":" test",
-            "email":"abc@wu.com",
-            "password": "123432",
-            "address": "pune",
-            "dob": "19/01/95",
-            "phone": "1234567800",
-            "id no": "23452",
-            "issue date": "01/18",
-            "exp date": "01/28",
-            "image": "https://www.shutterstock.com/image-photo/us-driver-license-isolated-on-white-213777280"
-        }
-
-       
-
-    ]
+      "id": 1,
+      "name": "vidya sarkar",
+      "email": "vidya.sarkar@wu.com",
+      "password": "1234",
+      "address": "pune",
+      "dob": "19/01/96",
+      "phone": "1234567809",
+      "id no": "2345",
+      "issue date": "01/18",
+      "exp date": "01/28",
+      "image": "img/id_img1.jpg"
+    },
+    {
+      "id": 2,
+      "name": " test",
+      "email": "test@wu.com",
+      "password": "12343",
+      "address": "pune",
+      "dob": "19/01/95",
+      "phone": "1234567800",
+      "id no": "23452",
+      "issue date": "01/18",
+      "exp date": "01/28",
+      "image": "https://www.shutterstock.com/image-photo/us-driver-license-isolated-on-white-213777280"
+    },
+    {
+      "id": 3,
+      "name": " test",
+      "email": "abc@wu.com",
+      "password": "123432",
+      "address": "pune",
+      "dob": "19/01/95",
+      "phone": "1234567800",
+      "id no": "23452",
+      "issue date": "01/18",
+      "exp date": "01/28",
+      "image": "https://www.shutterstock.com/image-photo/us-driver-license-isolated-on-white-213777280"
+    },
+    {
+      "id": 1682794470912,
+      "name": "a",
+      "email": "a@a.com",
+      "password": "2",
+      "address": "a",
+      "dob": "2023-04-27",
+      "phone": "1",
+      "id_no": "1",
+      "issue_date": "1",
+      "exp_date": "1",
+      "image": "img/id_img1.jpg"
+    },
+    {
+      "id": 1682796330152,
+      "name": "nagasai",
+      "email": "nagasai@wu.com",
+      "password": "1234",
+      "address": "pune",
+      "dob": "2023-03-31",
+      "phone": "1234567890",
+      "id_no": "1",
+      "issue_date": "1",
+      "exp_date": "1",
+      "image": "img/id_img1.jpg"
+    },
+    {
+      "id": 1682803313663,
+      "name": "vidya1",
+      "email": "vidya1@wu.com",
+      "password": "1234",
+      "address": "pune",
+      "dob": "2023-04-20",
+      "phone": "1234567890",
+      "gender": {
+        "gender": "1"
+      },
+      "id_no": "123",
+      "issue_date": "2023-04-18",
+      "exp_date": "3/12",
+      "image": "img/id_img1.jpg"
+    },
+    {
+      "id": 1682803529806,
+      "name": "a",
+      "email": "a@a.com",
+      "password": "1",
+      "address": "a",
+      "dob": "2023-04-18",
+      "phone": "112344742",
+      "gender": {
+        "gender": "1"
+      },
+      "id_no": "q",
+      "issue_date": "2023-07-30",
+      "exp_date": "ew",
+      "image": "img/id_img1.jpg"
+    },
+    {
+      "id": 1682804241102,
+      "name": "a",
+      "email": "a@A.com",
+      "password": "1",
+      "address": "a",
+      "dob": "2023-04-25",
+      "phone": "12344566",
+      "id_no": "ssf",
+      "issue_date": "2023-04-27",
+      "exp_date": "ghgh",
+      "image": {
+        "0": {}
+      }
+    },
+    {
+      "id": 1682804335881,
+      "name": "a",
+      "email": "a@a.com",
+      "password": "1",
+      "address": "a",
+      "dob": "2023-04-26",
+      "phone": "11",
+      "id_no": "swws",
+      "issue_date": "2023-04-12",
+      "exp_date": "qw",
+      "image": {
+        "0": {}
+      }
+    },
+    {
+      "id": 1682804882747,
+      "name": "a",
+      "email": "a@a.com",
+      "password": "a",
+      "address": "a",
+      "dob": "2023-04-18",
+      "phone": "1",
+      "gender": {
+        "gender": "Female"
+      },
+      "id_no": "qq",
+      "issue_date": "2023-04-27",
+      "exp_date": "qw",
+      "image": {
+        "0": {}
+      }
+    }
+  ]
+}

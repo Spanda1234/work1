@@ -1,0 +1,8 @@
+export const signup ="signup"
+export const Upload_Image ="Upload_Image"
+export const Remove_Image ="Remove_Image"
+export const Edit_Image ="Edit_Image"
+export const User_List = "User_List"
+export const SETUser_List = "Set_User_List"
+export const SignUp_User_List = "SignUp_User_List"
+export const LogIn_User_List = "LogIn_User_List"
