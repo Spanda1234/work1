@@ -1,5 +1,5 @@
 import { takeEvery, put } from "redux-saga/effects";
-import { SETUser_List, User_List, SignUp_User_List } from "./constant";
+import { SETUser_List, User_List, SignUp_User_List,LogIn_User_List } from "./constant";
 import axios from "axios";
 
 function* getUsers() {
@@ -45,7 +45,6 @@ function* postLoginUsers(action) {
     axios
       .post("http://localhost:3500/user", {
         id: action.user.id,
-       
         email: action.user.email,
         password: action.user.password,
         
@@ -68,6 +67,8 @@ function* postLoginUsers(action) {
 function* userSaga() {
   yield takeEvery(User_List, getUsers);
   yield takeEvery(SignUp_User_List, postUsers);
+  yield takeEvery(LogIn_User_List, postLoginUsers);
+
 }
 
 export default userSaga;

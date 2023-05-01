@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";//import { signup } from "../redux/authSlice";
+import { useDispatch } from "react-redux"; //import { signup } from "../redux/authSlice";
 import user from "../db/db.json";
 import login from "./login";
+import Signup from "./signup";
+import ImageUploading from "react-images-uploading";
 
 const UserDetails = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [dob, setDob] = useState("");
   const [phone, setPhone] = useState("");
   const [genderData, setGenderData] = useState("");
@@ -19,35 +19,40 @@ const UserDetails = () => {
   const [issuedate, setIssuedate] = useState("");
   const [expdate, setExpdate] = useState("");
   const [files, setFiles] = useState("");
+  const [imageList, setimageList] = useState("");
 
-  
-  
   console.log(user);
   useEffect(() => {
-    userDetail()
+    userDetail();
   }, []);
 
-  const userDetail= ()=>{
-    const users = user.user;
-    const userid =parseInt(localStorage.getItem("userId"))
+  // const userImage= ()=>{
+  //   {imageList.map((index) => {
+  //     const imageUrl = `http://localhost:3500/user/${index.image.data_url}`
+  //   })}
+  //   };
 
-    for(let i =0; i<users.length; i++){
-     // console.log(users[i].name)
-      if(users[i].id===userid){
+  const userDetail = () => {
+    const users = user.user;
+    const userid = parseInt(localStorage.getItem("userId"));
+
+    for (let i = 0; i < users.length; i++) {
+      // console.log(users[i].name)
+      if (users[i].id === userid) {
         //console.log(users[i].name)
-        setName(users[i].name)
-        setAddress(users[i].address)
-        setEmail(users[i].email)
-        setGenderData(users[i].gender.gender)
-        setDob(users[i].dob)
-        setPhone(users[i].phone)
-        setId(users[i].id_no)
-        setIssuedate(users[i].issue_date)
-        setExpdate(users[i].exp_date)
+        setName(users[i].name);
+        setAddress(users[i].address);
+        setEmail(users[i].email);
+        setGenderData(users[i].gender.gender);
+        setDob(users[i].dob);
+        setPhone(users[i].phone);
+        setId(users[i].id_no);
+        setIssuedate(users[i].issue_date);
+        setExpdate(users[i].exp_date);
+        setFiles(users[i].image);
       }
     }
-
-  }
+  };
 
   return (
     <div>
@@ -57,26 +62,11 @@ const UserDetails = () => {
 
       <div style={{ marginTop: 20 }}>
         <div style={styles.container}>
-          <div style={styles.content}>
-            <div className="card col">
-              <img
-                style={{
-                  height: "20vw",
-                  display: "block",
-                  objectFit: "cover",
-                  width: "100%",
-                }}
-                src={"profileImage.jpeg"}
-              />
-            </div>
-          </div>
-
           <div style={styles.details}>
             <div style={{ marginTop: 5 }}>
               <div>
                 <div style={{ display: "flex" }}>
                   <div>
-                    {" "}
                     <label style={{ fontSize: "20px" }}> Name : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
@@ -84,9 +74,8 @@ const UserDetails = () => {
                   </div>
                 </div>
 
-                <div style={{ display: "flex", marginTop: "10px" }}>
+                <div style={{ display: "flex" }}>
                   <div>
-                    {" "}
                     <label style={{ fontSize: "20px" }}> Address : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
@@ -96,7 +85,6 @@ const UserDetails = () => {
 
                 <div style={{ display: "flex" }}>
                   <div>
-                    {" "}
                     <label style={{ fontSize: "20px" }}> Email : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
@@ -106,7 +94,6 @@ const UserDetails = () => {
 
                 <div style={{ display: "flex" }}>
                   <div>
-                    {" "}
                     <label style={{ fontSize: "20px" }}>Date of Birth : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
@@ -116,7 +103,6 @@ const UserDetails = () => {
 
                 <div style={{ display: "flex" }}>
                   <div>
-                    {" "}
                     <label style={{ fontSize: "20px" }}>Phone Number : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
@@ -126,7 +112,6 @@ const UserDetails = () => {
 
                 <div style={{ display: "flex" }}>
                   <div>
-                    {" "}
                     <label style={{ fontSize: "20px" }}>Gender : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
@@ -135,12 +120,47 @@ const UserDetails = () => {
                 </div>
 
                 <div style={{ display: "flex" }}>
+                  <label style={{ fontSize: "20px" }}>ID details :- </label>
+                </div>
+
+                <div style={{ display: "flex", marginLeft: 20 }}>
                   <div>
-                    {" "}
-                    <label style={{ fontSize: "20px" }}>ID details : </label>
+                    <label style={{ fontSize: "18px" }}>ID No. : </label>
                   </div>
                   <div style={{ marginLeft: "30px", marginTop: "5px" }}>
                     <span>{id}</span>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", marginLeft: 20 }}>
+                  <div>
+                    <label style={{ fontSize: "18px" }}>Issue Date : </label>
+                  </div>
+                  <div style={{ marginLeft: "30px", marginTop: "5px" }}>
+                    <span>{issuedate}</span>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", marginLeft: 20 }}>
+                  <div>
+                    <label style={{ fontSize: "18px" }}>Expiry Date : </label>
+                  </div>
+                  <div style={{ marginLeft: "30px", marginTop: "5px" }}>
+                    <span>{expdate}</span>
+                  </div>
+                </div>
+
+                <div style={styles.content}>
+                  <div className="card col">
+                    <img
+                      style={{
+                        height: "10vw",
+                        display: "block",
+                        objectFit: "cover",
+                        width: "100%",
+                      }}
+                      src={files}
+                    />
                   </div>
                 </div>
               </div>
@@ -166,11 +186,13 @@ const styles = {
     height: 700,
     padding: 10,
     position: "relative",
+
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     margin: "auto",
+
     borderRadius: 10,
     broderWidth: 1,
     borderStyle: "solid",
@@ -187,9 +209,12 @@ const styles = {
   },
   details: {
     display: "block",
-    margin: "60px 50px 0px 200px",
+    margin: "40px 50px 0px 150px",
     padding: 20,
     position: "absolute",
+    textAlign: "center",
+    marginTop: 20,
+
     top: 0,
     left: 0,
     right: 0,

@@ -1,4 +1,4 @@
-import { SETUser_List, User_List } from "./constant";
+import { SignUp_User_List, User_List, LogIn_User_List } from "./constant";
 export const userList =  () => {
     //let data = "hello"
   return {
@@ -6,6 +6,22 @@ export const userList =  () => {
     data: "vidya"
   };
 };
+
+export const userSignUp =  () => {
+  //let data = "hello"
+return {
+  type: SignUp_User_List, 
+};
+};
+
+export const userLogIn =  (data) => {
+
+return {
+  type: LogIn_User_List, 
+  data
+};
+};
+
 
 // export const setuserList = (data) => {
 //   //let data = "hello"

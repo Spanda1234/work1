@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp, upload_Image } from "../redux/imageAction";
 import user from "../db/db.json";
-import * as fs from 'fs';
+import ImageUploading from "react-images-uploading";
+import * as fs from "fs";
 // import { saveAs } from 'file-saver';
 import axios from "axios";
 import { User_List } from "../redux/constant";
-import { userList } from "../redux/userAction";
+import { userList, userSignUp } from "../redux/userAction";
 // import {writeJsonFile} from 'write-json-file';
 //import fs from 'fs';
 // const fs = require('fs')
@@ -28,6 +29,7 @@ const Signup = () => {
   const [issuedate, setIssuedate] = useState("");
   const [expdate, setExpdate] = useState("");
   const [files, setFiles] = useState("");
+  const maxNumber = 5;
 
   // this function is used to navigate from one component to another programmatically
   // userNavigate() returns a function reference
@@ -49,32 +51,38 @@ const Signup = () => {
 
   //const handleChange = (event) => {};
 
-  function handleUpload() {
-    console.log("start")
-    console.log(files)
+  const handleChange = (imageList, addUpdateIndex) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setFiles(imageList);
+  };
 
-    //fs.writeFileSync('../db/img',files,(err)=>{console.log(err)})
-    const ImageData = new FormData();
-    if (files.length <= 5) {
-      for (let i = 0; i < files.length; i++) {
-        ImageData.set("images", files);
-      }
-    } else if (files.length > 5) {
-      console.log("only 5 image will be upload");
-    } else {
-      axios
-        .post(`http://localhost:3500/user/${id}`, {
-          files,
-        })
-        .then((Response) => {
-          const result = Response.data;
-        })
-        .catch((error) => {
-          console.log("error");
-        });
-    }
-    console.log(files);
-  }
+  // function handleUpload() {
+  //   console.log("start")
+  //   console.log(files)
+
+  //   //fs.writeFileSync('../db/img',files,(err)=>{console.log(err)})
+  //   const ImageData = new FormData();
+  //   if (files.length <= 5) {
+  //     for (let i = 0; i < files.length; i++) {
+  //       ImageData.set("images", files);
+  //     }
+  //   } else if (files.length > 5) {
+  //     console.log("only 5 image will be upload");
+  //   } else {
+  //     axios
+  //       .post(`http://localhost:3500/user/${id}`, {
+  //         files,
+  //       })
+  //       .then((Response) => {
+  //         const result = Response.data;
+  //       })
+  //       .catch((error) => {
+  //         console.log("error");
+  //       });
+  //   }
+  //   console.log(files);
+  // }
 
   const signuphsndle = async () => {
     console.log(email, password);
@@ -123,66 +131,10 @@ const Signup = () => {
           image: files,
         },
       });
-      // axios
-      //   .post("http://localhost:3500/user", {
-      //     id: Date.now(),
-      //     name: name,
-      //     email: email,
-      //     password: password,
-      //     address: address,
-      //     dob: dob,
-      //     phone: phone,
-      //     id_no: id,
-      //     issue_date: issuedate,
-      //     exp_date: expdate,
-      //     image: "img/id_img1.jpg",
-      //   })
-      //   .then((response) => {
-      //     const user1 = response.data;
-      //     console.log(user1)
-      //   }).catch((err)=>{
-      //       console.log(err);
-      //   })
-      // const user = {
-      //   id: Date.now(),
-      //   name: name,
-      //   email: email,
-      //   password: password,
-      //   address: address,
-      //   dob: dob,
-      //   phone: phone,
-      //   id_no: id,
-      //   issue_date: issuedate,
-      //   exp_date: expdate,
-      //   //image: "img/id_img1.jpg"
-      // };
-      users.push(user);
-      console.log(users);
       toast.success("successfully registered new user");
       // navigate to the singin page
       navigate("/");
-      // axios.post('http://localhost:3500/user',{
-      //             id:Date.now(),
-      //             name:name,
-      //   email:email,
-      //   password: password,
-      //   address: address,
-      //   dob: dob,
-      //   phone: phone,
-      //   id_no: id,
-      //   issue_date: issuedate,
-      //   exp_date: expdate,
-      //     image: "img/id_img1.jpg"
-      //       }).then((response)=>{
-      //         users = response.data
-      //       })
-
-      // dispatch(signup({
-      //   firstName,
-      //   lastName,
-      //   email,
-      //   phone,
-      //   password}))
+      
     }
 
     //  //writeJsonFile('../db/db.json', users);
@@ -351,7 +303,7 @@ const Signup = () => {
                   onChange={(event) => {
                     setIssuedate(event.target.value);
                   }}
-                  type="date"
+                  type="text"
                   class="form-control"
                   placeholder="Your vaild ID Issue Date"
                   aria-label="Your vaild ID Issue Date"
@@ -377,6 +329,118 @@ const Signup = () => {
             </div>
 
             <div className="mb-3">
+              <ImageUploading
+                multiple
+                value={files}
+                onChange={handleChange}
+                maxNumber={maxNumber}
+                dataURLKey="data_url"
+              >
+                {({
+                  imageList,
+                  onImageUpload,
+                  onImageRemoveAll,
+                  onImageUpdate,
+                  onImageRemove,
+                  isDragging,
+                  dragProps,
+                }) => (
+                  // write your building UI
+                  <div className="upload__image-wrapper">
+                    <button
+                      onClick={onImageUpload}
+                      className="btn btn-primary"
+                      style={{
+                        marginTop: 5,
+                        position: "relative",
+                        borderRadius: 5,
+                        width: "30",
+                        height: 30,
+                      }}
+                      {...dragProps}
+                    >
+                      Upload Your ID
+                    </button>
+                    &nbsp;
+                    <button
+                      onClick={onImageRemoveAll}
+                      className="btn btn-danger"
+                      style={{
+                        marginTop: 5,
+                        position: "relative",
+                        borderRadius: 5,
+                        width: "30",
+                        height: 30,
+                      }}
+                    >
+                      Remove all
+                    </button>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      {imageList.map((image, index) => (
+                        <div key={index} className="image-item">
+                          <img
+                            src={image["data_url"]}
+                            alt=""
+                            width="70"
+                            className="flex-container"
+                            style={{
+                              marginTop: 5,
+                              marginLeft:3
+                              
+                            }}
+                          />
+                          
+
+                          <div className="image-item__btn-wrapper">
+                            <div>
+                              <button
+                                onClick={() => onImageUpdate(index)}
+                                className="btn btn-warning"
+                                style={{
+                                  marginTop: 5,
+
+                                  borderRadius: 5,
+                                  width: "80%",
+                                  height: 28,
+                                  marginLeft:3,
+                                  fontSize:"12px"
+                                }}
+                              >
+                                Update
+                              </button>
+                            </div>
+                            <div>
+                              <button
+                                onClick={() => onImageRemove(index)}
+                                className="btn btn-danger"
+                                style={{
+                                  marginTop: 5,
+                                  borderRadius: 5,
+                                  width: "80%",
+                                  height: 28,
+                                  marginLeft:3,
+                                  fontSize:"11px"
+                                   
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </ImageUploading>
+            </div>
+
+            {/* <div className="mb-3">
               <input
                 className="form-control"
                 type="file"
@@ -400,7 +464,7 @@ const Signup = () => {
               >
                 Upload Your ID
               </button>
-            </div>
+            </div> */}
 
             <button
               style={styles.submitButton}
@@ -439,7 +503,7 @@ const Signup = () => {
 const styles = {
   container: {
     width: 400,
-    height: 1000,
+    height: 1050,
     padding: 10,
     position: "relative",
     top: 0,
@@ -450,7 +514,7 @@ const styles = {
     borderRadius: 10,
     broderWidth: 1,
     borderStyle: "solid",
-    boxShadow: "1px 1px 20px 5px #C9C9C9",
+    boxShadow: "1px 1px 20px 5px #C9C9C9"
   },
   submitButton: {
     position: "relative",
@@ -460,7 +524,7 @@ const styles = {
     color: "yellow",
     borderRadius: 5,
     border: "none",
-    marginTop: 50,
+    marginTop: 10,
   },
 };
 
