@@ -5,9 +5,6 @@ import { toast } from "react-toastify";
 import Signup from "../user/signup";
 
 const Navbar = () => {
-  // get the current status
-
-  const signinStatus = useSelector((state) => state?.authSlice?.status);
 
   // get the dispatcher
   const dispatch = useDispatch();

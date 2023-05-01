@@ -22,6 +22,7 @@ const UserDetails = () => {
   const [imageList, setimageList] = useState("");
 
   console.log(user);
+  
   useEffect(() => {
     userDetail();
   }, []);
