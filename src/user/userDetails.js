@@ -34,7 +34,8 @@ const UserDetails = () => {
 
   const userDetail = () => {
     const users = user.user;
-    const userid = parseInt(localStorage.getItem("userId"));
+    //const userid = parseInt(localStorage.getItem("userId"));
+    const userid = parseInt(sessionStorage.getItem("userId"));
 
     for (let i = 0; i < users.length; i++) {
       // console.log(users[i].name)
