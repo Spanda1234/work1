@@ -1,66 +1,71 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import { useDispatch, useSelector } from "react-redux";
 import ReCAPTCHA from "react-google-recaptcha";
-import { logIn } from "../redux/imageAction";
-import user from "../db/db.json";
+//import user from "../db/db.json";
+import { getUser } from "../../redux/login/Action";
+import "./login.css";
 
-import {userLogIn} from "../redux/userAction";
-
-const Login = () => {
+const LoginRedux = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [handleerror, sethandleerror] = useState(0);
+  const [handleerror, setHandleerror] = useState(0);
   const [success, setSuccess] = useState(false);
+  const [errorMessages, setErrorMessages] = useState("");
+  const [token, setToken] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  let data = useSelector((state)=>state.userDataList);
+
+  // let users = useSelector((state) => state?.usersReducer?.user);
+  // console.log("USER", users);
+
   useEffect(() => {
-    userLogIn()
+    //dispatch(getUser(data));
   }, []);
 
- 
-
-  const signinhandle = (event) => {
+  const signinHandle = (event) => {
     event.preventDefault();
-    // console.log(user.user);
-    // const users = user.user;
-    // console.log(users);
 
     let isValid = false;
+
+    // users?.forEach((user) => {
+    //   if (email.length !== 0 && password.length !== 0) {
+    //     if (user.email === email && user.password === password) {
+    //       console.log("users", users);
+    //       navigate("/userDetails", { state: { data: users } });
+    //       toast.success("welcome to wulife");
+    //     }
+    //   }
+    // });
+    // toast.error("Invalid credentials");
+
+    // check if user has really entered any value
     if (email.length === 0) {
-      toast.error("please enter email");
+      setErrorMessages("Please enter email");
     } else if (password.length === 0) {
-      toast.error("please enter password");
+      setErrorMessages("Please enter password");
     } else {
-      dispatch({
-        type: "LogIn_User_List",
-        user: {
-          email: email,
-          password: password,
-        },
-      });
-      for (let i = 0; i < user.length; i++) {
-        if (user[i].email === email && user[i].password === password) {
-          console.log(email, password);
-          //setSuccess(true);
-          localStorage.setItem("userId", user[i].id);
-          isValid = true;
-          //   toast.success("welcome to wulife");
-          // navigate("/userDetails");
-          break;
-        }
-      }
-      if (isValid) {
-        toast.success("welcome to wulife");
-        navigate("/userDetails");
-      } else {
-        toast.error("invalid email id or password");
-        sethandleerror((pre) => pre + 1);
-      }
+      let user = {
+        email: email,
+        password: password,
+      };
+      dispatch(getUser(user, navigate, setHandleerror));
+      // navigate("/userDetails");
+      // if (user.email === email && user.password === password) {
+      //   console.log("user", user);
+      //   isValid = true;
+      //   //break;
+      // }
+
+      // if (isValid) {
+      //   toast.success("welcome to wulife");
+      //   navigate("/userDetails");
+      // } else {
+      //   toast.error("invalid email id or password");
+      //   setHandleerror((pre) => pre + 1);
+      // }
       console.log(handleerror);
       console.log(email, password);
     }
@@ -77,8 +82,11 @@ const Login = () => {
       </header>
 
       <form name="loginfrom">
-        <div style={{ marginTop: 10 }}>
-          <div style={styles.container}>
+        <div className="login-wrapper" style={{ marginTop: 10 }}>
+          <div
+            className="login-container"
+            //style={styles.container}
+          >
             <div className="mb-3">
               <label> Username : </label>
               <input
@@ -87,9 +95,11 @@ const Login = () => {
                 }}
                 className="form-control"
                 type="text"
+                value={email}
                 placeholder="Enter Username"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -100,9 +110,11 @@ const Login = () => {
                 }}
                 className="form-control"
                 type="password"
+                value={password}
                 placeholder="Enter Password"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             {handleerror > 2 ? (
@@ -119,9 +131,9 @@ const Login = () => {
             </div>
 
             <button
-              style={styles.loginButton}
-              className="btn btn"
-              onClick={signinhandle}
+              //style={styles.loginButton}
+              className="btn-login"
+              onClick={signinHandle}
             >
               Login
             </button>
@@ -135,42 +147,8 @@ const Login = () => {
           </div>
         </div>
       </form>
-
-      <footer>
-        &copy;2023 Western Union Holdings,
-        <br />
-        Inc. All Rights Reserved
-      </footer>
     </div>
   );
 };
 
-const styles = {
-  container: {
-    width: 325,
-    height: 400,
-    padding: 10,
-    position: "relative",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    margin: "auto",
-    borderRadius: 10,
-    broderWidth: 1,
-    borderStyle: "solid",
-    boxShadow: "1px 1px 20px 5px #C9C9C9",
-  },
-  loginButton: {
-    position: "relative",
-    width: "100%",
-    height: 40,
-    backgroundColor: "#000",
-    color: "yellow",
-    borderRadius: 5,
-    border: "none",
-    marginTop: 5,
-  },
-};
-
-export default Login;
+export default LoginRedux;

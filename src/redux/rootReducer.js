@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import { userData } from "./imageReducer";
-import {userDataList } from './userReducer'
+import { usersReducer } from "./login/reducer";
+import { usersPostReducer } from "./signup/Reducer";
+import { usersGetReducer } from "./userDetails/Reducer";
 
 export default combineReducers({
-  userData,
-  userDataList
+  usersReducer,
+  usersPostReducer,
+  usersGetReducer,
 });

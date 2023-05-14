@@ -1,12 +1,9 @@
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import { useSelector, useDispatch } from 'react-redux'
-
+import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
-
-
   // const dispatch = useDispatch()
 
   // const signinStatus = useSelector((state) => state?.authSlice?.status)
@@ -21,20 +18,17 @@ const Home = () => {
   //       name: sessionStorage['username'],
   //     }
   //     dispatch(signin(user))
-  //   } 
+  //   }
   // })
 
-
   return (
-    
-      <div >
-          <style>{'body { background-color: yellow; }'}</style>
-          <h1 style = {{textAlign: 'center', marginTop: 200}}>
-             Welcome to Western Union 
-             </h1>
-      </div>
+    <div>
+      <style>{"body { background-color: yellow; }"}</style>
+      <h1 style={{ textAlign: "center", marginTop: 200 }}>
+        Welcome to Western Union
+      </h1>
+    </div>
+  );
+};
 
-  )
-}
-
-export default Home
+export default Home;

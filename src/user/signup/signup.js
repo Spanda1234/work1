@@ -1,19 +1,14 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signUp, upload_Image } from "../redux/imageAction";
-import user from "../db/db.json";
-import ImageUploading from "react-images-uploading";
-import * as fs from "fs";
-// import { saveAs } from 'file-saver';
-import axios from "axios";
-import { User_List } from "../redux/constant";
-import { userList, userSignUp } from "../redux/userAction";
-// import {writeJsonFile} from 'write-json-file';
-//import fs from 'fs';
-// const fs = require('fs')
+//import user from "../db/db.json";
+//import ImageUploading from "react-images-uploading";
+//import * as fs from "fs";
+//import { saveAs } from 'file-saver';
+//import axios from "axios";
+import { postUser } from "../../redux/signup/Action";
+import "./signup.css";
 
 const Signup = () => {
   // get user inputs
@@ -28,15 +23,17 @@ const Signup = () => {
   const [id, setId] = useState("");
   const [issuedate, setIssuedate] = useState("");
   const [expdate, setExpdate] = useState("");
-  const [files, setFiles] = useState("");
+  const [files, setFiles] = useState([]);
+  const [images, setImages] = useState([]);
+  const [imagesOrignal, setImagesOrignal] = useState([]);
+  const [errorMessages, setErrorMessages] = useState("");
   const maxNumber = 5;
+  let imageList;
 
   // this function is used to navigate from one component to another programmatically
   // userNavigate() returns a function reference
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const result = useSelector((state) => state.userData);
-  // console.log("redux data for upload image", result);
 
   // const user1 = {
   //   name: "test",
@@ -45,111 +42,108 @@ const Signup = () => {
   //   phone: 1234,
   // };
 
+  useEffect(() => {
+    //console.log("user" ,user)
+    //dispatch(postUser(user));
+  }, []);
+
   const handleGenderChange = ({ target }) => {
     setGenderData({ ...genderData, [target.name]: target.value });
   };
 
-  //const handleChange = (event) => {};
+  // const handleChange = (imageList, addUpdateIndex) => {
+  //   // data for submit
+  //   console.log(imageList, addUpdateIndex);
+  //   setFiles(imageList);
+  // };
 
-  const handleChange = (imageList, addUpdateIndex) => {
-    // data for submit
-    console.log(imageList, addUpdateIndex);
-    setFiles(imageList);
+  const handleImageRemove = (img) => {
+    console.log(img, images);
+    setImages((oldState) => oldState.filter((item) => item !== img));
+    images.map((im) => console.log(im.img));
+    // const filterIndex = images.indexOf(img);
+    // if (filterIndex > -1) {
+    //   images.splice(filterIndex, 1);
+    //   setImages(images.filter((img, i) => i !== img));
+    // }
   };
 
-  // function handleUpload() {
-  //   console.log("start")
-  //   console.log(files)
+  const onImageChange = (event, imageList, addUpdateIndex) => {
+    if (event.target.files && event.target.files[0]) {
+      console.log(URL.createObjectURL(event.target.files[0]));
+      console.log(event.target.files[0]);
+      console.log(event.target.files[0].name);
+      imageList = URL.createObjectURL(event.target.files[0]);
+      //imageList = `C:\\Users\\323982\\Downloads\\${event.target.files[0].name}`;
+      console.log(imageList, addUpdateIndex);
+      // const _images = images.push(imageList)
+      setImages([...images, imageList]);
+      setImagesOrignal([...imagesOrignal, event.target.files[0]]);
+    }
+  };
 
-  //   //fs.writeFileSync('../db/img',files,(err)=>{console.log(err)})
-  //   const ImageData = new FormData();
-  //   if (files.length <= 5) {
-  //     for (let i = 0; i < files.length; i++) {
-  //       ImageData.set("images", files);
-  //     }
-  //   } else if (files.length > 5) {
-  //     console.log("only 5 image will be upload");
-  //   } else {
-  //     axios
-  //       .post(`http://localhost:3500/user/${id}`, {
-  //         files,
-  //       })
-  //       .then((Response) => {
-  //         const result = Response.data;
-  //       })
-  //       .catch((error) => {
-  //         console.log("error");
-  //       });
-  //   }
-  //   console.log(files);
-  // }
-
-  const signuphsndle = async () => {
+  const signuphsndle = async (e) => {
+    e.preventDefault();
     console.log(email, password);
-    console.log(user.user);
-    const users = user.user;
-    console.log(users);
+    // console.log(user.user);
+    // const users = user.user;
+    // console.log(users);
 
     // check if user has really entered any value
     if (name.length === 0) {
-      toast.error("please enter name");
+      setErrorMessages("please enter name");
+      //toast.error("please enter name");
     } else if (address.length === 0) {
-      toast.error("please enter address");
+      setErrorMessages("please enter address");
+      //toast.error("please enter address");
     } else if (email.length === 0) {
-      toast.error("please enter email");
+      setErrorMessages("please enter email");
+      //toast.error("please enter email");
     } else if (password.length === 0) {
-      toast.error("please enter password");
+      setErrorMessages("please enter password");
+      //toast.error("please enter password");
     } else if (confirmPassword.length === 0) {
-      toast.error("please confirm password");
+      setErrorMessages("please confirm password");
+      //toast.error("please confirm password");
     } else if (password !== confirmPassword) {
-      toast.error("password does not match");
-    } else if (dob.length == 0) {
-      toast.error("please enter date of birth");
-    } else if (phone.length >= 10) {
-      toast.error("phone number should be 10 digit");
+      setErrorMessages("password does not match");
+      //toast.error("password does not match");
+    } else if (dob.length === 0) {
+      setErrorMessages("please enter date of birth");
+      //toast.error("please enter date of birth");
+    } else if (phone.length === 0) {
+      setErrorMessages("please enter phone number");
+      //toast.error("phone number should be 10 digit");
     } else if (id.length === 0) {
-      toast.error("please enter ID number");
+      setErrorMessages("please enter ID number");
+      //toast.error("please enter ID number");
     } else if (issuedate.length === 0) {
-      toast.error("please enter issue date");
+      setErrorMessages("please enter issue date");
+      //toast.error("please enter issue date");
     } else if (expdate.length === 0) {
-      toast.error("please enter expiry date");
+      setErrorMessages("please enter expiry date");
+      //toast.error("please enter expiry date");
     } else {
-      dispatch({
-        type: "SignUp_User_List",
-        user: {
-          id: Date.now(),
-          name: name,
-          email: email,
-          password: password,
-          address: address,
-          dob: dob,
-          phone: phone,
-          gender: genderData,
-          id_no: id,
-          issue_date: issuedate,
-          exp_date: expdate,
-          image: files,
-        },
-      });
+      let user = {
+        //id: Date.now(),
+        name: name,
+        email: email,
+        password: password,
+        address: address,
+        dob: dob,
+        phone: phone,
+        gender: genderData,
+        id_no: id,
+        issue_date: issuedate,
+        exp_date: expdate,
+        image: images,
+        imagesOrignal: imagesOrignal,
+      };
+      dispatch(postUser(user));
       toast.success("successfully registered new user");
       // navigate to the singin page
-      navigate("/");
-      
+      navigate("/login");
     }
-
-    //  //writeJsonFile('../db/db.json', users);
-
-    // Write data in 'Output.txt' .
-    // fs.writeFile('./db/db.json', users, (err) => {
-
-    //     // In case of a error throw err.
-    //     if (err) throw err;
-    // })
-    var file = new File([users], "../db/db.json");
-    //saveAs("../db/db.json");
-
-    // await fs.writeFileSync('../db/db.json', JSON.stringify(users), (err) => {
-    //   if (err) console.log('Error writing file:', err);})
   };
 
   return (
@@ -159,8 +153,11 @@ const Signup = () => {
       </header>
 
       <form name="signupfrom">
-        <div style={{ marginTop: 10 }}>
-          <div style={styles.container}>
+        <div className="signup-wrapper" style={{ marginTop: 10 }}>
+          <div
+            className="signup-container"
+            //style={styles.container}
+          >
             <div className="mb-3" style={{ marginTop: 5 }}>
               <label>Name : </label>
               <input
@@ -168,10 +165,14 @@ const Signup = () => {
                   setName(event.target.value);
                 }}
                 className="form-control"
+                value={name}
                 type="text"
                 placeholder="Enter Your Name"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
+              {/* {errorMessages!=''?<span>{errorMessages =''}</span>:null} */}
+              {/* {errorMessages===name?<span>{}</span>:null} */}
             </div>
 
             <div className="mb-3">
@@ -182,9 +183,11 @@ const Signup = () => {
                 }}
                 className="form-control"
                 type="text"
+                value={address}
                 placeholder="Enter Full Address"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -195,9 +198,11 @@ const Signup = () => {
                 }}
                 className="form-control"
                 type="email"
+                value={email}
                 placeholder="Enter Email"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -207,10 +212,12 @@ const Signup = () => {
                   setPassword(event.target.value);
                 }}
                 className="form-control"
+                value={password}
                 type="password"
                 placeholder="Enter Password"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -221,9 +228,11 @@ const Signup = () => {
                 }}
                 className="form-control"
                 type="password"
+                value={confirmPassword}
                 placeholder="Enter Password"
-                required
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -234,7 +243,10 @@ const Signup = () => {
                 }}
                 className="form-control"
                 type="date"
+                value={dob}
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -245,10 +257,14 @@ const Signup = () => {
                 }}
                 className="form-control"
                 type="number"
+                value={phone}
                 placeholder="Enter Phone Number"
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                required
+                minlength={10}
+                maxLength={10}
+                required="required"
               />
+              <span style={{ color: "red" }}>{errorMessages}</span>
             </div>
 
             <div className="mb-3">
@@ -289,10 +305,13 @@ const Signup = () => {
                   }}
                   type="text"
                   class="form-control"
+                  value={id}
                   placeholder="Your vaild ID Number"
                   aria-label="Your vaild ID Number"
                   aria-describedby="basic-addon1"
+                  required="required"
                 />
+                <span style={{ color: "red" }}>{errorMessages}</span>
               </div>
 
               <div class="input-group mb-3">
@@ -305,10 +324,13 @@ const Signup = () => {
                   }}
                   type="text"
                   class="form-control"
+                  value={issuedate}
                   placeholder="Your vaild ID Issue Date"
                   aria-label="Your vaild ID Issue Date"
                   aria-describedby="basic-addon1"
+                  required="required"
                 />
+                <span style={{ color: "red" }}>{errorMessages}</span>
               </div>
 
               <div class="input-group mb-3">
@@ -321,15 +343,92 @@ const Signup = () => {
                   }}
                   type="text"
                   class="form-control"
+                  value={expdate}
                   placeholder="Your vaild ID Expiry Date"
                   aria-label="Your vaild ID Expiry Date"
                   aria-describedby="basic-addon1"
+                  required="required"
                 />
+                <span style={{ color: "red" }}>{errorMessages}</span>
               </div>
             </div>
 
             <div className="mb-3">
-              <ImageUploading
+              <div>
+                <input
+                  type="file"
+                  multiple="multiple"
+                  maxNumber={maxNumber}
+                  onChange={onImageChange}
+                  className="filetype"
+                  dataURLKey="blob"
+                  disabled={images?.length > 4}
+                  //value={images}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  {images.length > 0 &&
+                    images?.map((image, index) => (
+                      <div key={index} className="image-item">
+                        <img
+                          alt="preview image"
+                          //src={image}
+                          src={image}
+                          maxNumber="5"
+                          //alt=""
+                          width="70"
+                          height="50"
+                          className="flex-container"
+                          style={{
+                            marginTop: 5,
+                            marginLeft: 3,
+                          }}
+                        />
+                        <div className="image-item__btn-wrapper">
+                          {/* <div>
+                              <button
+                                //onClick={() => onImageUpdate(index)}
+                                className="btn btn-warning"
+                                style={{
+                                  marginTop: 5,
+
+                                  borderRadius: 5,
+                                  width: "80%",
+                                  height: 28,
+                                  marginLeft: 3,
+                                  fontSize: "12px",
+                                }}
+                              >
+                                Update
+                              </button>
+                            </div> */}
+                          <div>
+                            <button
+                              onClick={() => handleImageRemove(image)}
+                              className="btn btn-danger"
+                              style={{
+                                marginTop: 5,
+                                borderRadius: 5,
+                                width: "80%",
+                                height: 28,
+                                marginLeft: 3,
+                                fontSize: "11px",
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* <ImageUploading
                 multiple
                 value={files}
                 onChange={handleChange}
@@ -390,11 +489,9 @@ const Signup = () => {
                             className="flex-container"
                             style={{
                               marginTop: 5,
-                              marginLeft:3
-                              
+                              marginLeft: 3,
                             }}
                           />
-                          
 
                           <div className="image-item__btn-wrapper">
                             <div>
@@ -407,8 +504,8 @@ const Signup = () => {
                                   borderRadius: 5,
                                   width: "80%",
                                   height: 28,
-                                  marginLeft:3,
-                                  fontSize:"12px"
+                                  marginLeft: 3,
+                                  fontSize: "12px",
                                 }}
                               >
                                 Update
@@ -423,9 +520,8 @@ const Signup = () => {
                                   borderRadius: 5,
                                   width: "80%",
                                   height: 28,
-                                  marginLeft:3,
-                                  fontSize:"11px"
-                                   
+                                  marginLeft: 3,
+                                  fontSize: "11px",
                                 }}
                               >
                                 Remove
@@ -437,7 +533,32 @@ const Signup = () => {
                     </div>
                   </div>
                 )}
-              </ImageUploading>
+              </ImageUploading> */}
+              {/* <input
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setFiles(e.target.files)
+                  }}
+                  type="file"
+                  class="form-control"
+                  placeholder="Your vaild ID Issue Date"
+                  aria-label="Your vaild ID Issue Date"
+                  aria-describedby="basic-addon1"
+                /> */}
+              {/* <button
+                      //onClick={onImageUpload}
+                      className="btn btn-primary"
+                      style={{
+                        marginTop: 5,
+                        position: "relative",
+                        borderRadius: 5,
+                        width: "30",
+                        height: 30,
+                      }}
+                      //{...dragProps}
+                    >
+                      Upload Your ID
+                    </button> */}
             </div>
 
             {/* <div className="mb-3">
@@ -467,65 +588,23 @@ const Signup = () => {
             </div> */}
 
             <button
-              style={styles.submitButton}
-              className="btn btn"
+              //style={styles.submitButton}
+              className="btn-signup"
               onClick={signuphsndle}
             >
-              {/* {signuphsndle} */}
               Submit
             </button>
 
-            {/* <button
-              style={styles.submitButton}
-              className="btn btn"
-              onClick={() => dispatch(userList())}
-            >
-              UserList
-            </button> */}
-
             <div className="mb-3" style={{ marginTop: 5 }}>
               <div>
-                Already have an account? <Link to="/">Login here</Link>
+                Already have an account? <Link to="/login">Login here</Link>
               </div>
             </div>
           </div>
         </div>
       </form>
-      <footer>
-        &copy;2023 Western Union Holdings,
-        <br />
-        Inc. All Rights Reserved
-      </footer>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    width: 400,
-    height: 1050,
-    padding: 10,
-    position: "relative",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    margin: "auto",
-    borderRadius: 10,
-    broderWidth: 1,
-    borderStyle: "solid",
-    boxShadow: "1px 1px 20px 5px #C9C9C9"
-  },
-  submitButton: {
-    position: "relative",
-    width: "100%",
-    height: 40,
-    backgroundColor: "#000",
-    color: "yellow",
-    borderRadius: 5,
-    border: "none",
-    marginTop: 10,
-  },
 };
 
 export default Signup;

@@ -36,6 +36,7 @@
     transform: rotate(360deg);
   }
 }
-.navbar{
-  width: 100%;
+.wrapper{
+  margin-top: 16vh;
 }
+

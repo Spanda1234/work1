@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import { useDispatch } from "react-redux";
 import ReCAPTCHA from "react-google-recaptcha";
-import { logIn } from "../redux/imageAction";
+//import { logIn } from "../redux/action/imageAction";
 import user from "../db/db.json";
 
 const Login = () => {
@@ -12,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [handleerror, sethandleerror] = useState(0);
   const [success, setSuccess] = useState(false);
+  const [errorMessages, setErrorMessages] = useState({});
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,32 +21,38 @@ const Login = () => {
   //   psw: 'abc',
   //   id: 2
   // }
+  const renderErrorMessage = (name) =>
+    name === errorMessages.name && (
+      <div className="error">{errorMessages.message}</div>
+    );
 
   const signinhandle = (event) => {
     event.preventDefault();
-    console.log(user.user);
+    //console.log(user.user);
     const users = user.user;
-    console.log(users);
+    //console.log(users);
 
     let isValid = false;
     if (email.length === 0) {
-      toast.error("please enter email");
+      {
+        renderErrorMessage("uname");
+      }
+      //toast.error("please enter email");
     } else if (password.length === 0) {
-      toast.error("please enter password");
+      //toast.error("please enter password");
     } else {
-
       for (let i = 0; i < users.length; i++) {
         if (users[i].email === email && users[i].password === password) {
-          console.warn(email, password);
+          // console.log(email, password);
           //setSuccess(true);
           //localStorage.setItem("userId",users[i].id)
-          sessionStorage.setItem("userId",users[i].id)
+          sessionStorage.setItem("userId", users[i].id);
 
           isValid = true;
-        //   toast.success("welcome to wulife");
-        // navigate("/userDetails");
-          break
-        } 
+          //   toast.success("welcome to wulife");
+          // navigate("/userDetails");
+          break;
+        }
         // else {
         //   // toast.error("invalid email id or password");
         //   // sethandleerror((pre) => pre + 1);
@@ -55,19 +61,16 @@ const Login = () => {
       }
 
       if (isValid) {
-       
         toast.success("welcome to wulife");
-        navigate("/userDetails");
+        navigate("/userDetails_redux")
+        
+        //navigate("/userDetails");
       } else {
         toast.error("invalid email id or password");
-          sethandleerror((pre) => pre + 1);
+        sethandleerror((pre) => pre + 1);
       }
       console.log(handleerror);
       console.log(email, password);
-
-      // dispatch(signin({
-      //   email,
-      //   password}))
     }
   };
 
@@ -95,6 +98,7 @@ const Login = () => {
                 placeholder="Enter Username"
                 required
               />
+              {renderErrorMessage("uname")}
             </div>
 
             <div className="mb-3">
@@ -140,12 +144,6 @@ const Login = () => {
           </div>
         </div>
       </form>
-
-      <footer>
-        &copy;2023 Western Union Holdings,
-        <br />
-        Inc. All Rights Reserved
-      </footer>
     </div>
   );
 };

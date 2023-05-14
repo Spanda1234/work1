@@ -6,10 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 
 // get the store and provider
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store from "./redux/store/store";
 import { applyMiddleware } from "redux";
 
-console.warn(store);
+//console.warn(store);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
